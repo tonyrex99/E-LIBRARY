@@ -14,7 +14,7 @@ export function checkAuthToken() {
 
 export function getAuthToken() {
   const data = Cookies.get(TOKEN_NAME);
-  let token = false;
+  let token = 'false';
 
   if (data) {
     try {

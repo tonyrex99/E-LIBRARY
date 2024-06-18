@@ -22,6 +22,7 @@ enum Pages {
   ReserveBooks,
   /**admin pages */
   AdminHome,
+  AdminLogin,
   AdminHomeOverview,
   AdminBookManagement,
   AdminBookManagementRoot,

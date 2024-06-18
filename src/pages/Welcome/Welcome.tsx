@@ -24,6 +24,7 @@ function Welcome() {
       <div className={`bg-gray-800 w-48 h-full `}></div>
 
       <div
+        style={{ backgroundImage: `url('/senate.png')`, backgroundSize: 'cover' }}
         className={`relative h-full w-full flex flex-col justify-center items-center font-poppins font-gray-800 font-medium text-xl px-5 md:px-36 `}
       >
         <div className="text-center font-bold  w-full text-2xl mb-[6.375rem]  ">
@@ -47,7 +48,7 @@ function Welcome() {
           </div>
           <div className=" mt-8 xl:mt-32 r-0 w-fit text-left">
             Sign in as admin{' '}
-            <Link to={'login'}>
+            <Link to={'login/admin'}>
               <button className=" text-blue-400">here</button>
             </Link>
           </div>

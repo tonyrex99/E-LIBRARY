@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getAllDeptBooks } from '@/services/users/queries';
+import { getUserDept } from '@/api/cookies';
+import { department } from '@/services/users/endpoints';
 function Home() {
   const { data, isLoading } = useQuery({
-    queryFn: () => getAllDeptBooks('EIE'),
+    queryFn: () => getAllDeptBooks(getUserDept() as department),
     queryKey: ['ALLDEPTBOOKS'],
     refetchOnMount: true,
   });

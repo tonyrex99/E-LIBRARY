@@ -1,4 +1,4 @@
-const APIBACK = ''; //'https://library-project-4iu4.onrender.com/api/v1/';
+export const APIBACK = '/'; //'https://library-project-4iu4.onrender.com/api/v1/';
 export type department = 'EIE' | 'CIVIL' | 'PET_CHEM' | 'MECH';
 
 export const GETUSERSDATA = APIBACK + 'users/me';

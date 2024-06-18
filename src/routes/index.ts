@@ -170,6 +170,12 @@ const routes: Routes = {
     title: 'Login',
     icon: GitHubIcon,
   },
+  [Pages.AdminLogin]: {
+    component: asyncComponentLoader(() => import('@/pages/Login')),
+    path: '/login/:admin',
+    title: 'Login',
+    icon: GitHubIcon,
+  },
   [Pages.NotFound]: {
     component: asyncComponentLoader(() => import('@/pages/NotFound')),
     path: '*',

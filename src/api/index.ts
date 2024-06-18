@@ -7,7 +7,7 @@ import _axios from 'axios';
 import axiosRetry from 'axios-retry';
 import { getAuthToken } from './cookies';
 
-const API_BASE_URL = '/api/'; //'https://library-project-4iu4.onrender.com/api/v1/ '; //process.env.REACT_APP_BACKEND ||
+const API_BASE_URL = 'https://library-project-4iu4.onrender.com/api/v1'; //process.env.REACT_APP_BACKEND ||
 
 const axiosInstance = _axios.create({
   baseURL: `${API_BASE_URL}`,
@@ -21,9 +21,10 @@ axiosInstance.interceptors.request.use(
   async (config) => {
     const token = getAuthToken();
 
-    if (token && token !== 'null' && token !== 'undefined') {
+    if (typeof token === 'string' && token.trim() !== '') {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
     return config;
   },
   (error) => Promise.reject(error),
