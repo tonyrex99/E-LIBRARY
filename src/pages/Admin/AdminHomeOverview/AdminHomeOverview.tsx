@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import Meta from '@/components/Meta';
-import Notification from '@/pages/User/Notification';
+//import Notification from '@/pages/User/Notification';
 
 function AdminHomeOverview() {
   return (
@@ -31,7 +31,7 @@ function AdminHomeOverview() {
         </div>
       </div>
 
-      <div className="flex w-full flex-col gap-y-5 mt-20">
+      {/**  <div className="flex w-full flex-col gap-y-5 mt-20">
         <div className="flex flex-row justify-between">
           <div className=" mb-2 font-bold text-xl">Notifications</div>
           <Link to={'book-management'} className=" mb-2 font-normal text-xl hover:underline">
@@ -41,7 +41,7 @@ function AdminHomeOverview() {
         <div className="flex gap-11  flex-col ">
           <Notification embed={true} limit={3} type="admin" />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
