@@ -18,6 +18,7 @@ export interface ApiSuccessResponse<T> {
 }
 
 export interface UsersResponseData {
+  locked: boolean;
   matricNumber: string;
   userId: string;
   department: string;
