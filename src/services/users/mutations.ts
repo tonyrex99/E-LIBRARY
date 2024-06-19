@@ -88,8 +88,8 @@ export function requestBorrowReserveBook({
   return Api.post(POSTBORROWBOOK(bookId), data);
 }
 
-export function suspendUserById(userId: number) {
+export function suspendUserById({ userId, value = true }: { userId: number; value: boolean }) {
   return Api.post(PUTSUSPENDUSER(userId), {
-    suspend: true,
+    suspend: value,
   });
 }

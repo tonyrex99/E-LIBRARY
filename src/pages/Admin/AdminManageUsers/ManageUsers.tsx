@@ -2,12 +2,14 @@
 import Meta from '@/components/Meta';
 import { StyledInputBase, Search, SearchIconWrapper } from '@/sections/HotKeys/HotKeys';
 import SearchIcon from '@mui/icons-material/Search';
-import { useState, useEffect } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getAllUsersData } from '@/services/users/queries';
 import { suspendUserById } from '@/services/users/mutations';
 
 function ManageUsers() {
+  const queryClient = useQueryClient();
+
   const { data, isLoading } = useQuery({
     queryFn: () => getAllUsersData(),
     queryKey: ['ALLUSERS'],
@@ -15,31 +17,23 @@ function ManageUsers() {
   });
 
   const [searchText, setSearchText] = useState('');
-  const [filteredUsers, setFilteredUsers] = useState<any[]>([]);
-
-  useEffect(() => {
-    if (data) {
-      const filtered = data?.data?.filter((user: any) =>
-        user.matricNumber.toString().includes(searchText.toUpperCase()),
-      );
-      setFilteredUsers(filtered);
-    }
-  }, [data, searchText]);
 
   const suspend = useMutation({
     mutationFn: suspendUserById,
     onSuccess: () => {
-      alert('User Suspended');
+      alert('Operation Successful');
+      queryClient.invalidateQueries({ queryKey: ['ALLUSERS'] });
     },
     onError: () => {
-      alert('Suspension Failed');
+      alert('Operation Failed');
     },
   });
 
-  const handleSuspend = (userId: number, matricNumber: string) => {
-    const confirmed = window.confirm(`Are you sure you want to suspend user ${matricNumber}?`);
+  const handleSuspend = (userId: number, matricNumber: string, status: string) => {
+    const value = status == 'suspend' ? true : false;
+    const confirmed = window.confirm(`Are you sure you want to ${status} user ${matricNumber}?`);
     if (confirmed) {
-      suspend.mutate(userId);
+      suspend.mutate({ userId, value });
     }
   };
 
@@ -60,18 +54,31 @@ function ManageUsers() {
 
       <div className="flex w-full h-full flex-col">
         {isLoading && <div>Loading...</div>}
-        {!isLoading && filteredUsers.length === 0 && <div>No results found</div>}
+        {!isLoading && data?.data?.length === 0 && <div>No results found</div>}
         {!isLoading &&
-          filteredUsers.map((item, key) => (
-            <div key={key} className="flex flex-row justify-between">
-              <div className="mb-2 font-bold text-lg md:text-xl">
+          data?.data?.map((item, key) => (
+            <div
+              key={key}
+              className={`flex flex-row justify-between items-center rounded-xl p-2 ${
+                item?.locked && ' xbg-red-600'
+              }`}
+            >
+              <div className=" font-bold text-lg md:text-xl">
                 User <b>{item.matricNumber}</b>
               </div>
               <button
-                onClick={() => handleSuspend(Number(item.userId), item.matricNumber)}
-                className="mb-2 font-normal text-lg md:text-xl hover:underline"
+                onClick={() =>
+                  handleSuspend(
+                    Number(item.userId),
+                    item.matricNumber,
+                    item?.locked == true ? 'restore' : 'suspend',
+                  )
+                }
+                className={` text-lg md:text-xl hover:underline font-semibold ${
+                  item?.locked ? ' text-green-500' : ' text-red-500'
+                } `}
               >
-                Suspend
+                {item?.locked ? 'Restore' : 'Suspend'}
               </button>
             </div>
           ))}
