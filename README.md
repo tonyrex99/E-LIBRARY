@@ -1,13 +1,13 @@
-[![Analyses](https://github.com/suren-atoyan/react-pwa/actions/workflows/analyses.yml/badge.svg)](https://github.com/suren-atoyan/react-pwa/actions/workflows/analyses.yml)
-[![E2E Tests](https://github.com/suren-atoyan/react-pwa/actions/workflows/tests:e2e.yml/badge.svg)](https://github.com/suren-atoyan/react-pwa/actions/workflows/tests:e2e.yml)
+[![Analyses](https://github.com/suren-atoyan/E - LIBRARY/actions/workflows/analyses.yml/badge.svg)](https://github.com/suren-atoyan/E - LIBRARY/actions/workflows/analyses.yml)
+[![E2E Tests](https://github.com/suren-atoyan/E - LIBRARY/actions/workflows/tests:e2e.yml/badge.svg)](https://github.com/suren-atoyan/E - LIBRARY/actions/workflows/tests:e2e.yml)
 
-<a href="http://react-pwa.surenatoyan.com/" target="_blank" rel="noreferrer">
+<a href="http://E - LIBRARY.surenatoyan.com/" target="_blank" rel="noreferrer">
  <img src="./public/cover.png" title="Base App">
 </a>
 
-# React-PWA - `v2` is here 🚀🎉⚡️
+# E - LIBRARY - `v2` is here 🚀🎉⚡️
 
-**Starter kit for modern web applications!**
+**E-library management application!**
 
 ## Synopsis
 
@@ -356,7 +356,7 @@ There are other scripts as well:
 - `https-preview` - is the same as `preview`, but with HTTPS. It's handy for testing your PWA capabilities in your local environment.
 - `prepare` - install `husky` and copy the default `env/.shared` file to `.env` file. This script is being run automatically after `npm install` or `yarn`.
 
-## [Live Demo](https://react-pwa.surenatoyan.com/)
+## [Live Demo](https://E - LIBRARY.surenatoyan.com/)
 
 <div>
  <img src="./public/demo-dark.png" width="280" title="Dark demo"> <img src="./public/demo-light.png" width="280" title="Light demo">
