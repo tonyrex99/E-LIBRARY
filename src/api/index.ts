@@ -7,12 +7,14 @@ import _axios from 'axios';
 import axiosRetry from 'axios-retry';
 import { getAuthToken } from './cookies';
 
-const API_BASE_URL = 'https://library-project-4iu4.onrender.com/api/v1'; //process.env.REACT_APP_BACKEND ||
+const API_BASE_URL = '/api'; // 'https://library-project-4iu4.onrender.com/api/v1'; //'/api';
 
 const axiosInstance = _axios.create({
   baseURL: `${API_BASE_URL}`,
   headers: {
     'Content-Type': 'application/json',
+    Accept: '*/*',
+    'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
   },
 });
 
@@ -21,8 +23,9 @@ axiosInstance.interceptors.request.use(
   async (config) => {
     const token = getAuthToken();
 
-    if (typeof token === 'string' && token.trim() !== '') {
+    if (typeof token === 'string' && token.trim() !== '' && token != 'false') {
       config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Accept = '*/*';
     }
 
     return config;
@@ -83,7 +86,7 @@ const Api = {
       .catch(handleApiError) as Promise<T>,
   put: <T>(endpoint: string, data: unknown, config?: AxiosRequestConfig): Promise<T> =>
     axiosInstance
-      .put(endpoint, data, config)
+      .put(endpoint, JSON.stringify(data), config)
       .then(handleApiSuccess)
       .catch(handleApiError) as Promise<T>,
   patch: <T>(endpoint: string, data: unknown, config?: AxiosRequestConfig): Promise<T> =>

@@ -41,14 +41,6 @@ function Login() {
   });
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
-    /**
-    setAuthToken({
-      token:
-        'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHJpbmciLCJpYXQiOjE3MTg2OTExODgsImV4cCI6MTcxODcyNTc0OH0.RCMrvbJkf1jJTKdNQzNqKgkwdqtlh8DWmqPPykNWchA',
-      role: 'ADMIN',
-      department: 'EIE',
-    });
-     */
     e.preventDefault();
     const oldUser = userInfo;
     console.log('old use is: ', oldUser);

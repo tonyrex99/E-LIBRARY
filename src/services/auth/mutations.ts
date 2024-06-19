@@ -6,9 +6,7 @@ export async function signInUser(args: {
   matricNumber: string;
   password: string;
 }): Promise<ApiSuccessResponse<AuthSuccessResponse>> {
-  return Api.post(LOGIN, args, {
-    headers: { accept: '*/*', 'Content-Type': 'application/json' },
-  });
+  return Api.post(LOGIN, args);
 }
 
 interface RegisterUser {

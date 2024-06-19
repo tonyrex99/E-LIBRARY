@@ -13,6 +13,7 @@ export default defineConfig({
       '/api': {
         target: 'https://library-project-4iu4.onrender.com/api/v1/',
         changeOrigin: true,
+        secure: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
