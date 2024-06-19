@@ -3727,7 +3727,7 @@ import-fresh@^3.2.1:
 
 imurmurhash@^0.1.4, "imurmurhash@github:jensyt/imurmurhash-js":
   version "0.1.4"
-  resolved "git+ssh://git@github.com/jensyt/imurmurhash-js.git#9f40361c7e2835a9b7b8eaa1cbab2a9f94ee22a2"
+  resolved "https://github.com/jensyt/imurmurhash-js.git#9f40361c7e2835a9b7b8eaa1cbab2a9f94ee22a2"
 
 inflight@^1.0.4:
   version "1.0.6"
