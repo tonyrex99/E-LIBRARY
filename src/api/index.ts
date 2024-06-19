@@ -7,7 +7,7 @@ import _axios from 'axios';
 import axiosRetry from 'axios-retry';
 import { getAuthToken } from './cookies';
 
-const API_BASE_URL = 'https://library-project-4iu4.onrender.com/api/v1'; //'/api';
+const API_BASE_URL = '/api'; // 'https://library-project-4iu4.onrender.com/api/v1'; //'/api';
 
 const axiosInstance = _axios.create({
   baseURL: `${API_BASE_URL}`,
