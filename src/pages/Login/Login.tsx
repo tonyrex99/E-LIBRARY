@@ -8,14 +8,14 @@ import { signInUser } from '@/services/auth/mutations';
 import { useMutation } from '@tanstack/react-query';
 import { setAuthToken } from '@/api/cookies';
 import { AuthSuccessResponse } from '@/services/types/responses';
-import { getAuthToken, getUserRole } from '@/api/cookies';
+//import { getAuthToken, getUserRole } from '@/api/cookies';
 import { useParams } from 'react-router-dom';
 function Login() {
   const { admin } = useParams();
   const [userInfo, setUserInfo] = useState({ matricNumber: '', password: '' });
 
   const router = useNavigate();
-  console.log(' auth token is: ', getAuthToken(), ' user role is: ', getUserRole());
+  //console.log(' auth token is: ', getAuthToken(), ' user role is: ', getUserRole());
 
   const mutation = useMutation({
     mutationFn: signInUser,

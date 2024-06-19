@@ -19,7 +19,11 @@ function Root() {
               Add books
             </div>
           </Link>
-
+          <Link to={'/admin/book-management/approve-books'} className="w-full">
+            <div className="flex py-3 px-10 w-full rounded-[15px] bg-gray-800 text-white ">
+              Approve book request
+            </div>
+          </Link>
           <Link to={'approve-extension'} className="w-full">
             <div className="flex py-3 px-10 w-full rounded-[15px] bg-gray-800 text-white ">
               Approve submission change request

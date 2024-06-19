@@ -17,6 +17,7 @@ import { SetStateAction, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getUserRole } from '@/api/cookies';
 import { deleteBookById } from '@/services/users/mutations';
+
 export const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -53,7 +54,8 @@ function HotKeys() {
   const [, sidebarActions] = useSidebar();
   const [isHotKeysDialogOpen, hotKeysDialogActions] = useHotKeysDialog();
   const [value, setValue] = useState('');
-  const [searchItems, setsearchItems] = useState<any>([]);
+  const [searchItems, setSearchItems] = useState<any>([]);
+  const [searchCompleted, setSearchCompleted] = useState(false);
 
   const role = getUserRole();
   const handleChange = (event: { target: { value: SetStateAction<string> } }) => {
@@ -63,11 +65,13 @@ function HotKeys() {
   useHotkeys('alt+s', sidebarActions.toggle);
   useHotkeys('alt+t', themeActions.toggle);
   useHotkeys('alt+k', hotKeysDialogActions.toggle);
+
   const mutation = useMutation({
     mutationFn: searchBook,
     onSuccess: (data: any) => {
       console.log('data is: ', data.data);
-      setsearchItems(data.data);
+      setSearchCompleted(true);
+      setSearchItems(data.data);
     },
     onError: (err: any) => {
       console.log('Error: ', err);
@@ -79,8 +83,7 @@ function HotKeys() {
     mutationFn: deleteBookById,
     onSuccess: (data: any) => {
       console.log('data is: ', data.data);
-      // Remove the deleted item from searchItems
-      setsearchItems((prevItems: any) =>
+      setSearchItems((prevItems: any) =>
         prevItems.filter((item: any) => item.bookId !== data.data.bookId),
       );
     },
@@ -96,7 +99,6 @@ function HotKeys() {
         searchString: value,
       });
       console.log('Enter was pressed');
-      // Add your search logic here if needed
     }
   };
 
@@ -164,9 +166,14 @@ function HotKeys() {
           ))}
         </FlexBox>
 
-        {searchItems.length < 1 && (
+        {searchCompleted && searchItems.length < 1 && (
           <FlexBox alignItems="center" height={50} width={'inherit'} justifyContent="center">
             <Typography>Nothing to see here...</Typography>
+          </FlexBox>
+        )}
+        {mutation.isPending && (
+          <FlexBox alignItems="center" height={50} width={'inherit'} justifyContent="center">
+            <Typography>Searching...</Typography>
           </FlexBox>
         )}
       </DialogContent>

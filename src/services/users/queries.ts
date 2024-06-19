@@ -29,7 +29,7 @@ export interface bookDue {
 export interface bookRequest {
   bookRequestId: string;
   userId: number;
-  pickupDate: string;
+  pickUpDate: string;
   dueDate: string;
   bookId: number;
   description: string;

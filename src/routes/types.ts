@@ -28,6 +28,7 @@ enum Pages {
   AdminBookManagementRoot,
   AdminBookManagementBorrowedBooks,
   AdminBookManagementApprove,
+  AdminBookManagementApproveBorrow,
   AdminBookManagementAddBooks,
   AdminNotifications,
   AdminManageUsers,

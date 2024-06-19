@@ -15,7 +15,7 @@ export const LoadBookName = ({ id }: { id: number | string }) => {
     return <div>Loading...</div>;
   }
 
-  return <div>{bookData?.data?.name} </div>;
+  return <>{bookData?.data?.name} </>;
 };
 
 interface LoadUserNameProps {
@@ -39,7 +39,7 @@ export const LoadUserName = ({ id }: LoadUserNameProps) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const user = finalData?.find((user: any) => user.userId === id);
 
-  return <div>&nbsp;{user ? user.matricNumber : 'User not found'}&nbsp; </div>;
+  return <>&nbsp;{user ? user.matricNumber : 'User not found'}&nbsp; </>;
 };
 
 function BorrowedBook() {

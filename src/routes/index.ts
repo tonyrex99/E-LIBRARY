@@ -133,6 +133,14 @@ const routes: Routes = {
             title: 'Landng',
             icon: GitHubIcon,
           },
+          [Pages.AdminBookManagementApproveBorrow]: {
+            component: asyncComponentLoader(
+              () => import('@/pages/Admin/AdminBookManagementApproveBorrow'),
+            ),
+            path: 'approve-books',
+            title: 'Landng',
+            icon: GitHubIcon,
+          },
 
           [Pages.AdminBookManagementAddBooks]: {
             component: asyncComponentLoader(
