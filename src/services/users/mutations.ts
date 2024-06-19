@@ -49,17 +49,17 @@ export function approveDueDateChange({
   bookRequestId: number;
   decision: string;
 }) {
-  return Api.put(PUTAPPROVEDUEDATECHANGE(bookRequestId), {
+  return Api.post(PUTAPPROVEDUEDATECHANGE(bookRequestId), {
     approvalStatus: decision,
   });
 }
 
 export function deleteBookById(bookId: number) {
-  return Api.delete(DELETEBOOK(bookId));
+  return Api.post(DELETEBOOK(bookId), '');
 }
 
 export function deleteBookRequestById(bookId: number) {
-  return Api.delete(DELETEBOOKREQUESTS(bookId));
+  return Api.post(DELETEBOOKREQUESTS(bookId), '');
 }
 
 export function requestDueDateChange({
@@ -69,11 +69,11 @@ export function requestDueDateChange({
   data: { newDueDate: string };
   bookRequestId: number;
 }) {
-  return Api.put(PUTCHANGEDUEDATECHANGE(bookRequestId), data);
+  return Api.post(PUTCHANGEDUEDATECHANGE(bookRequestId), data);
 }
 
 export function approveBorrowBookRequest(bookRequestId: number) {
-  return Api.put(PUTAPPROVEBORROWREQUEST(bookRequestId), {
+  return Api.post(PUTAPPROVEBORROWREQUEST(bookRequestId), {
     approvalStatus: 'APPROVED',
   });
 }
@@ -89,7 +89,7 @@ export function requestBorrowReserveBook({
 }
 
 export function suspendUserById(userId: number) {
-  return Api.put(PUTSUSPENDUSER(userId), {
+  return Api.post(PUTSUSPENDUSER(userId), {
     suspend: true,
   });
 }

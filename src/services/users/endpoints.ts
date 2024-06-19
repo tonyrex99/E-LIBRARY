@@ -14,11 +14,11 @@ export const POSTSEARCHBOOK = `${APIBACK}library/books/search`;
 export const POSTBORROWBOOK = (bookId: number): string =>
   `${APIBACK}library/books/request/${bookId}`;
 export const GETBOOK = (bookId: number): string => `${APIBACK}library/books/${bookId}`;
-export const DELETEBOOK = (bookId: number): string => `${APIBACK}library/books/${bookId}`;
+export const DELETEBOOK = (bookId: number): string => `${APIBACK}library/books/delete/${bookId}`;
 export const GETBOOKREQUESTS = (bookRequestId: number): string =>
   `${APIBACK}library/books/requests/${bookRequestId}`;
 export const DELETEBOOKREQUESTS = (bookRequestId: number): string =>
-  `${APIBACK}library/books/requests/${bookRequestId}`;
+  `${APIBACK}library/books/requests/delete/${bookRequestId}`;
 export const GETCHANGEDUEDATE = `${APIBACK}library/books/requests/change-due-date`;
 export const GETALLBOOKREQUESTS = `${APIBACK}library/books/requests/all`;
 export const GETMYBOOKREQUESTS = `${APIBACK}library/books/requests/me`;
