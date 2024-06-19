@@ -14,7 +14,7 @@ import { searchBook } from '@/services/users/mutations';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import { SetStateAction, useState } from 'react';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 import { getUserRole } from '@/api/cookies';
 import { deleteBookById } from '@/services/users/mutations';
 
@@ -133,37 +133,38 @@ function HotKeys() {
           flexDirection={'column'}
           className="gap-y-4 max-h-48 overflow-y-scroll mt-2"
         >
-          {searchItems.map((item: any, index: number) => (
-            <div key={index} className="flex flex-row items-center gap-1 w-full justify-between">
-              <FlexBox key={index} className="text-wrap">
-                <span className="flex flex-wrap text-wrap">{item.name}</span>
-              </FlexBox>
-              {role != 'ADMIN' ? (
-                <Link to={`/dashboard/${item?.bookId}`}>
-                  <Button color="info" variant="contained">
-                    Read
-                  </Button>
-                </Link>
-              ) : (
-                <div className="flex gap-1">
+          {searchItems.length > 0 &&
+            searchItems.map((item: any, index: number) => (
+              <div key={index} className="flex flex-row items-center gap-1 w-full justify-between">
+                <FlexBox key={index} className="text-wrap">
+                  <span className="flex flex-wrap text-wrap">{item.name}</span>
+                </FlexBox>
+                {role != 'ADMIN' ? (
                   <a href={`/dashboard/${item?.bookId}`}>
                     <Button color="info" variant="contained">
                       Read
                     </Button>
                   </a>
-                  <Button
-                    onClick={() => {
-                      deleteBook.mutate(Number(item?.bookId));
-                    }}
-                    color="warning"
-                    variant="contained"
-                  >
-                    Delete
-                  </Button>
-                </div>
-              )}
-            </div>
-          ))}
+                ) : (
+                  <div className="flex gap-1">
+                    <a href={`/dashboard/${item?.bookId}`}>
+                      <Button color="info" variant="contained">
+                        Read
+                      </Button>
+                    </a>
+                    <Button
+                      onClick={() => {
+                        deleteBook.mutate(Number(item?.bookId));
+                      }}
+                      color="warning"
+                      variant="contained"
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                )}
+              </div>
+            ))}
         </FlexBox>
 
         {searchCompleted && searchItems.length < 1 && (

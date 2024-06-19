@@ -24,7 +24,7 @@ const messages = {
   images: {
     failed: 'something went wrong during image loading :(',
   },
-  404: 'Hey bro? What are you looking for?',
+  404: 'Hey? What are you looking for?',
 };
 
 const dateFormat = 'MMMM DD, YYYY';
