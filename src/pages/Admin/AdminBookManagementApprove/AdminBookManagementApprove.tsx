@@ -39,6 +39,14 @@ function AdminBookManagementApprove() {
     }
   }, [data]);
 
+  const handleApproval = (bookRequestId: number, decision: 'APPROVED' | 'REJECTED') => {
+    const action = decision === 'APPROVED' ? 'approve' : 'deny';
+    const confirmed = window.confirm(`Are you sure you want to ${action} this request?`);
+    if (confirmed) {
+      changeDueDate.mutate({ bookRequestId, decision });
+    }
+  };
+
   return (
     <div className="flex w-full h-full flex-col ">
       <Meta title="Transactions" />
@@ -60,34 +68,20 @@ function AdminBookManagementApprove() {
                 >
                   <div className="flex flex-row">
                     <div className="text-gray-800 font-bold">
-                      {' '}
-                      &nbsp; User {item.matricNumber}&nbsp;{' '}
-                    </div>{' '}
-                    wants to change his date of return from{' '}
-                    <div className="text-gray-800 font-bold">&nbsp; {item.oldDueDate}&nbsp;</div> to{' '}
+                      &nbsp; User {item.matricNumber}&nbsp;
+                    </div>
+                    wants to change his date of return from
+                    <div className="text-gray-800 font-bold">&nbsp; {item.oldDueDate}&nbsp;</div>
+                    to
                     <div className="text-gray-800 font-bold">&nbsp; {item.newDueDate}&nbsp;</div>
                   </div>
                   <div className="flex flex-row gap-x-1">
-                    <button
-                      onClick={() => {
-                        changeDueDate.mutate({
-                          bookRequestId: Number(item?.bookRequestId),
-                          decision: 'APPROVED',
-                        });
-                      }}
-                    >
+                    <button onClick={() => handleApproval(Number(item?.bookRequestId), 'APPROVED')}>
                       <div className="p-3 bg-gray-800 text-white rounded-[15px] font-normal">
                         Approve
                       </div>
                     </button>
-                    <button
-                      onClick={() => {
-                        changeDueDate.mutate({
-                          bookRequestId: Number(item?.bookRequestId),
-                          decision: 'REJECTED',
-                        });
-                      }}
-                    >
+                    <button onClick={() => handleApproval(Number(item?.bookRequestId), 'REJECTED')}>
                       <div className="p-3 bg-red-500 text-white rounded-[15px] font-normal">
                         Deny
                       </div>
