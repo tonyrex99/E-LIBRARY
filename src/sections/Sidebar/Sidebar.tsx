@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
 
@@ -14,21 +15,21 @@ import Drawer from '@mui/material/Drawer';
 import { ExpandLess, ExpandMore, ExitToApp } from '@mui/icons-material';
 import { removeAuthToken } from '@/api/cookies';
 import './style.css';
+
 export const drawerWidth = 300;
 
 interface Props {
   window?: () => Window;
-  title?: string; // Add title prop
+  title?: string;
 }
 
 function Sidebar(props: Props) {
-  const { title } = props; // Destructure title prop
+  const { title } = props;
   const [isSidebarOpen, sidebarActions] = useSidebar();
   const { window } = props;
   const container = window !== undefined ? () => window().document.body : undefined;
   const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>({});
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleDropdownToggle = (path: string) => {
     setOpenDropdowns((prev) => ({ ...prev, [path]: !prev[path] }));
   };
@@ -37,11 +38,11 @@ function Sidebar(props: Props) {
     const items: JSX.Element[] = [];
 
     Object.values(sidebarroutes).forEach(
-      ({ title: routeTitle, icon: Icon, nested, notChild, visible }) => {
+      ({ path, title: routeTitle, icon: Icon, nested, notChild, visible }) => {
         if (!visible) return;
 
-        const fullPath = parentPath; // path == '' ? `/${parentPath}` : `${parentPath}/${path}`;
-        console.log('fullpath is ' + fullPath);
+        const fullPath = parentPath ? `${parentPath}/${path}` : path;
+        console.log('fullpath is: ', fullPath);
         const hasNestedRoutes = nested && Object.values(nested).some((nr) => nr.visible);
 
         if (!notChild) {
@@ -51,11 +52,16 @@ function Sidebar(props: Props) {
                 sx={{
                   minHeight: 48,
                   justifyContent: isSidebarOpen ? 'initial' : 'center',
-                  // px: 2.5,
+                  borderColor: 'black',
+                  borderwidth: '1px',
+                  backgroundColor: 'white',
+                  borderRadius: '15px',
+                  color: 'black',
                 }}
                 component={NavLink}
-                to={'/' + fullPath}
+                to={fullPath!}
                 onClick={sidebarActions.close}
+                end
               >
                 <ListItemIcon
                   sx={{
@@ -69,14 +75,14 @@ function Sidebar(props: Props) {
                 <ListItemText primary={routeTitle} />
                 {hasNestedRoutes &&
                   Object.values(nested).filter((nr) => nr.visible && !nr.notChild).length > 0 &&
-                  (openDropdowns[fullPath] ? <ExpandLess /> : <ExpandMore />)}
+                  (openDropdowns[fullPath!] ? <ExpandLess /> : <ExpandMore />)}
               </ListItemButton>
               {hasNestedRoutes && (
-                <Collapse in={openDropdowns[fullPath]} timeout="auto" unmountOnExit>
+                <Collapse in={openDropdowns[fullPath!]} timeout="auto" unmountOnExit>
                   <List component="div" disablePadding>
                     {Object.values(nested)
                       .filter((nr) => nr.visible && !nr.notChild)
-                      .map((nr) => renderSidebar({ [nr.path as string]: nr }, `/${fullPath}/`))}
+                      .map((nr) => renderSidebar({ [nr.path as string]: nr }, fullPath))}
                   </List>
                 </Collapse>
               )}
@@ -88,20 +94,30 @@ function Sidebar(props: Props) {
           Object.values(nested).forEach((nr) => {
             if (nr.visible && nr.notChild) {
               items.push(
-                <ListItem key={(fullPath + nr.path) as string} sx={{ px: 1 }}>
+                <ListItem
+                  key={`${fullPath}/${nr.path}`}
+                  sx={
+                    {
+                      // px: 1,
+                    }
+                  }
+                >
                   <ListItemButton
                     sx={{
                       minHeight: 48,
                       justifyContent: isSidebarOpen ? 'initial' : 'center',
 
-                      //                      backgroundColor: 'red',
-                      //    borderRadius: '15px',
-                      //  borderWidth: 1,
-                      //borderColor: 'black',
+                      borderColor: 'black',
+                      borderwidth: '1px',
+                      backgroundColor: 'white',
+                      borderRadius: '15px',
+                      color: 'black',
+                      width: '100%',
+                      mx: -1,
                     }}
                     component={NavLink}
-                    className=" rounded-xl border"
-                    to={`${fullPath}${nr.path}` as string}
+                    className={`rounded-xl border w-full`}
+                    to={`${fullPath}/${nr.path}`}
                     onClick={sidebarActions.close}
                   >
                     <ListItemIcon
@@ -113,7 +129,7 @@ function Sidebar(props: Props) {
                     >
                       {nr.icon ? <nr.icon sx={{ color: 'inherit' }} /> : <DefaultIcon />}
                     </ListItemIcon>
-                    <ListItemText className=" w-full text-xl " primary={nr.title} />
+                    <ListItemText className="w-full text-xl" primary={nr.title} />
                   </ListItemButton>
                 </ListItem>,
               );
@@ -129,11 +145,11 @@ function Sidebar(props: Props) {
   const filteredRoutes = title
     ? Object.values(routes).filter((route) => route.path === title)
     : Object.values(routes);
-  console.log('filtered routes are: ', filteredRoutes, ' title is: ', title);
+
   const drawer = (
     <div
       style={{ position: 'relative', height: '100%' }}
-      className=" flex flex-col justify-start items-center bg-[#d3d3d3] border-r-2 border-gray-800"
+      className="flex flex-col justify-start items-center bg-[#d3d3d3] border-r-2 border-gray-800"
     >
       <div className="w-full text-center p-3 text-xl mt-2 font-semibold">COE LIBRARY</div>
       <List sx={{ width: 250, pt: (theme) => `${theme.mixins.toolbar.minHeight}px` }}>
@@ -144,15 +160,18 @@ function Sidebar(props: Props) {
         to="/"
         sx={{
           position: 'absolute',
-          bottom: 5,
+          bottom: 10,
           left: 5,
-          width: '100%',
+          width: '80%',
           justifyContent: 'center',
-          //  borderRadius: '15px',
-          //borderWidth: 1,
           mx: 4,
           borderColor: 'black',
+          borderwidth: '1px',
+          backgroundColor: 'white',
+          borderRadius: '15px',
+          color: 'black',
         }}
+        className="hover:bg-[#5c0512]/50 hover:text-white"
         onClick={() => removeAuthToken()}
       >
         <ListItemIcon>

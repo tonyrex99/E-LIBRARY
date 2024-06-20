@@ -100,13 +100,16 @@ const routes: Routes = {
     path: '/admin',
     title: 'Home',
     visible: true,
+
     icon: HomeOutlined,
     nested: {
       [Pages.AdminHomeOverview]: {
         component: asyncComponentLoader(() => import('@/pages/Admin/AdminHomeOverview')),
         path: '',
         title: 'Home',
-        icon: GitHubIcon,
+        icon: HomeOutlined,
+        visible: false,
+        notChild: true,
       },
 
       [Pages.AdminBookManagement]: {
