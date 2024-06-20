@@ -1,0 +1,12 @@
+.active {
+  background-color: #1d2939;
+  color: white !important;
+  border-radius: 15px;
+}
+
+.MuiSvgIcon-root {
+  color: inherit !important;
+}
+.MuiListItemIcon-root {
+  color: inherit !important;
+}

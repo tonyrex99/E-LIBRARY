@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
 
 import DefaultIcon from '@mui/icons-material/Deblur';
@@ -13,6 +13,7 @@ import useSidebar from '@/store/sidebar';
 import Drawer from '@mui/material/Drawer';
 import { ExpandLess, ExpandMore, ExitToApp } from '@mui/icons-material';
 import { removeAuthToken } from '@/api/cookies';
+import './style.css';
 export const drawerWidth = 300;
 
 interface Props {
@@ -52,7 +53,7 @@ function Sidebar(props: Props) {
                   justifyContent: isSidebarOpen ? 'initial' : 'center',
                   // px: 2.5,
                 }}
-                component={Link}
+                component={NavLink}
                 to={'/' + fullPath}
                 onClick={sidebarActions.close}
               >
@@ -63,7 +64,7 @@ function Sidebar(props: Props) {
                     justifyContent: 'center',
                   }}
                 >
-                  {Icon ? <Icon /> : <DefaultIcon />}
+                  {Icon ? <Icon sx={{ color: 'inherit' }} /> : <DefaultIcon />}
                 </ListItemIcon>
                 <ListItemText primary={routeTitle} />
                 {hasNestedRoutes &&
@@ -98,8 +99,8 @@ function Sidebar(props: Props) {
                       //  borderWidth: 1,
                       //borderColor: 'black',
                     }}
-                    className="rounded-xl border "
-                    component={Link}
+                    component={NavLink}
+                    className=" rounded-xl border"
                     to={`${fullPath}${nr.path}` as string}
                     onClick={sidebarActions.close}
                   >
@@ -110,7 +111,7 @@ function Sidebar(props: Props) {
                         justifyContent: 'center',
                       }}
                     >
-                      {nr.icon ? <nr.icon /> : <DefaultIcon />}
+                      {nr.icon ? <nr.icon sx={{ color: 'inherit' }} /> : <DefaultIcon />}
                     </ListItemIcon>
                     <ListItemText className=" w-full text-xl " primary={nr.title} />
                   </ListItemButton>
@@ -132,14 +133,14 @@ function Sidebar(props: Props) {
   const drawer = (
     <div
       style={{ position: 'relative', height: '100%' }}
-      className=" flex flex-col justify-start items-center"
+      className=" flex flex-col justify-start items-center bg-[#d3d3d3] border-r-2 border-gray-800"
     >
       <div className="w-full text-center p-3 text-xl mt-2 font-semibold">COE LIBRARY</div>
       <List sx={{ width: 250, pt: (theme) => `${theme.mixins.toolbar.minHeight}px` }}>
         {filteredRoutes.map((route) => renderSidebar({ [route.path as string]: route }))}
       </List>
       <ListItem
-        component={Link}
+        component={NavLink}
         to="/"
         sx={{
           position: 'absolute',
