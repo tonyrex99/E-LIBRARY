@@ -76,12 +76,15 @@ export function requestDueDateChange({
 export function approveBorrowBookRequest({
   bookRequestId,
   decision,
+  message,
 }: {
   bookRequestId: number;
   decision: string;
+  message: string;
 }) {
   return Api.post(PUTAPPROVEBORROWREQUEST(bookRequestId), {
     approvalStatus: decision,
+    message: message,
   });
 }
 

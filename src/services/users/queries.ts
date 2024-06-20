@@ -9,6 +9,7 @@ import {
   GETCHANGEDUEDATE,
   GETBOOK,
   GETMYBOOKREQUESTS,
+  GETMESSAGES,
 } from './endpoints';
 import { department } from './endpoints';
 
@@ -71,4 +72,16 @@ export function getBook(bookId: number): Promise<ApiSuccessResponse<book>> {
 
 export function getChangeDueRequest(): Promise<ApiSuccessResponse<bookDue[]>> {
   return Api.get(GETCHANGEDUEDATE);
+}
+
+export function getMessages(): Promise<ApiSuccessResponse<messagesResponse[]>> {
+  return Api.get(GETMESSAGES);
+}
+
+export interface messagesResponse {
+  messageId: number;
+  adminId: number;
+  userId: number;
+  message: string;
+  bookId: number;
 }

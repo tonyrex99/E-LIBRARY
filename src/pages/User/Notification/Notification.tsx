@@ -3,13 +3,21 @@ import { useQuery } from '@tanstack/react-query';
 import { getMyBookRequests } from '@/services/users/queries';
 import { LoadBookName } from '../BorrowedBooks/BorrowedBook';
 import { bookRequest } from '@/services/users/queries';
+import { getMessages } from '@/services/users/queries';
 function Notification() {
   const { data, isLoading } = useQuery({
     queryFn: getMyBookRequests,
     queryKey: ['ALLMYBOOKREQUEST'],
   });
 
+  const { data: notifData } = useQuery({
+    queryFn: getMessages,
+    queryKey: ['NOTIFICATIONRESPONSE'],
+  });
+
+  console.log(' getmessages notif is returning: ', notifData?.data);
   const [overdueBooks, setOverdueBooks] = useState<bookRequest[]>([]);
+  //console.log(' messages data is: ', messageData.data);
 
   useEffect(() => {
     if (!isLoading && data) {

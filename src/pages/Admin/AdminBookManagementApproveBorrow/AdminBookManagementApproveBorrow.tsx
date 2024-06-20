@@ -6,10 +6,26 @@ import { getAllBookRequests } from '@/services/users/queries';
 import { approveBorrowBookRequest } from '@/services/users/mutations';
 import { LoadUserName, LoadBookName } from '@/pages/User/BorrowedBooks/BorrowedBook';
 import { useState, useEffect } from 'react';
+import { Modal, Box, Typography, TextField, Button } from '@mui/material';
+
+const style = {
+  // eslint-disable-next-line @typescript-eslint/prefer-as-const
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 4,
+};
 
 function AdminBookManagementApproveBorrow() {
   const queryClient = useQueryClient();
   const [bookRequests, setBookRequests] = useState<any[]>([]);
+  const [open, setOpen] = useState(false);
+  const [rejectionMessage, setRejectionMessage] = useState('');
+  const [currentRequestId, setCurrentRequestId] = useState<number | null>(null);
 
   const { data, isPending, isLoading } = useQuery({
     queryFn: getAllBookRequests,
@@ -19,7 +35,6 @@ function AdminBookManagementApproveBorrow() {
   const changeDueDate = useMutation({
     mutationFn: approveBorrowBookRequest,
     onSuccess: async (data, variables) => {
-      // Immediately remove the processed item from the state
       setBookRequests((prev) =>
         prev.filter((request) => request.bookRequestId !== variables.bookRequestId),
       );
@@ -40,15 +55,35 @@ function AdminBookManagementApproveBorrow() {
   }, [data]);
 
   const handleApproval = (bookRequestId: number, decision: 'APPROVED' | 'REJECTED') => {
-    const action = decision === 'APPROVED' ? 'approve' : 'deny';
-    const confirmed = window.confirm(`Are you sure you want to ${action} this request?`);
-    if (confirmed) {
-      changeDueDate.mutate({ bookRequestId, decision });
+    if (decision === 'APPROVED') {
+      const confirmed = window.confirm('Are you sure you want to approve this request?');
+      if (confirmed) {
+        changeDueDate.mutate({ bookRequestId, decision, message: '' });
+      }
+    } else {
+      const confirmed = window.confirm('Are you sure you want to reject this request?');
+      if (confirmed) {
+        setCurrentRequestId(bookRequestId);
+        setOpen(true);
+      }
+    }
+  };
+
+  const handleSendRejectionMessage = () => {
+    if (currentRequestId !== null) {
+      changeDueDate.mutate({
+        bookRequestId: currentRequestId,
+        decision: 'REJECTED',
+        message: rejectionMessage,
+      });
+      setOpen(false);
+      setRejectionMessage('');
+      setCurrentRequestId(null);
     }
   };
 
   return (
-    <div className="flex w-full h-full flex-col ">
+    <div className="flex w-full h-full flex-col">
       <Meta title="Transactions" />
       <div className="flex w-full flex-col gap-y-5">
         <button className="mb-2 font-bold text-xl flex flex-row items-center">
@@ -105,6 +140,34 @@ function AdminBookManagementApproveBorrow() {
           </div>
         </div>
       </div>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Reason for Rejection
+          </Typography>
+          <TextField
+            id="modal-modal-description"
+            fullWidth
+            multiline
+            rows={4}
+            value={rejectionMessage}
+            onChange={(e) => setRejectionMessage(e.target.value)}
+          />
+          <Button
+            onClick={handleSendRejectionMessage}
+            variant="contained"
+            color="primary"
+            sx={{ mt: 2 }}
+          >
+            Send
+          </Button>
+        </Box>
+      </Modal>
     </div>
   );
 }

@@ -31,3 +31,5 @@ export const PUTSUSPENDUSER = (userId: number): string =>
 export const RETURNBOOK = (bookRequestId: number) => {
   return `${APIBACK}library/books/requests/${bookRequestId}/return`;
 };
+
+export const GETMESSAGES = APIBACK + 'messages';
