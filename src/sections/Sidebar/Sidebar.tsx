@@ -13,7 +13,7 @@ import useSidebar from '@/store/sidebar';
 import Drawer from '@mui/material/Drawer';
 import { ExpandLess, ExpandMore, ExitToApp } from '@mui/icons-material';
 import { removeAuthToken } from '@/api/cookies';
-export const drawerWidth = 240;
+export const drawerWidth = 300;
 
 interface Props {
   window?: () => Window;
@@ -87,13 +87,18 @@ function Sidebar(props: Props) {
           Object.values(nested).forEach((nr) => {
             if (nr.visible && nr.notChild) {
               items.push(
-                <ListItem key={(fullPath + nr.path) as string}>
+                <ListItem key={(fullPath + nr.path) as string} sx={{ px: 1 }}>
                   <ListItemButton
                     sx={{
                       minHeight: 48,
                       justifyContent: isSidebarOpen ? 'initial' : 'center',
-                      px: 2.5,
+
+                      //                      backgroundColor: 'red',
+                      //    borderRadius: '15px',
+                      //  borderWidth: 1,
+                      //borderColor: 'black',
                     }}
+                    className="rounded-xl border "
                     component={Link}
                     to={`${fullPath}${nr.path}` as string}
                     onClick={sidebarActions.close}
@@ -107,7 +112,7 @@ function Sidebar(props: Props) {
                     >
                       {nr.icon ? <nr.icon /> : <DefaultIcon />}
                     </ListItemIcon>
-                    <ListItemText primary={nr.title} />
+                    <ListItemText className=" w-full text-xl " primary={nr.title} />
                   </ListItemButton>
                 </ListItem>,
               );
@@ -125,7 +130,11 @@ function Sidebar(props: Props) {
     : Object.values(routes);
   console.log('filtered routes are: ', filteredRoutes, ' title is: ', title);
   const drawer = (
-    <div style={{ position: 'relative', height: '100%' }}>
+    <div
+      style={{ position: 'relative', height: '100%' }}
+      className=" flex flex-col justify-start items-center"
+    >
+      <div className="w-full text-center p-3 text-xl mt-2 font-semibold">COE LIBRARY</div>
       <List sx={{ width: 250, pt: (theme) => `${theme.mixins.toolbar.minHeight}px` }}>
         {filteredRoutes.map((route) => renderSidebar({ [route.path as string]: route }))}
       </List>
@@ -134,16 +143,20 @@ function Sidebar(props: Props) {
         to="/"
         sx={{
           position: 'absolute',
-          bottom: 0,
+          bottom: 5,
           width: '100%',
           justifyContent: 'center',
+          //  borderRadius: '15px',
+          //borderWidth: 1,
+          mx: 2,
+          borderColor: 'black',
         }}
         onClick={() => removeAuthToken()}
       >
         <ListItemIcon>
           <ExitToApp />
         </ListItemIcon>
-        <ListItemText primary="Logout" />
+        <ListItemText className="text-xl" primary="Logout" />
       </ListItem>
     </div>
   );

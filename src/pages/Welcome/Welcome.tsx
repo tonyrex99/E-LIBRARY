@@ -28,7 +28,7 @@ function Welcome() {
         className={`relative h-full w-full flex flex-col justify-center items-center font-poppins font-gray-800 font-medium text-xl px-5 md:px-36 `}
       >
         <div className="text-center font-bold  w-full text-2xl mb-[6.375rem]  ">
-          WELCOME TO COE LIBRARY
+          WELCOME TO COVENANT UNIVERSITY COE LIBRARY
         </div>
 
         <div className="flex flex-col w-full max-w-[62rem] self-center gap-11 justify-center ">
