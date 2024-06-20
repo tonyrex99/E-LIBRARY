@@ -15,9 +15,8 @@ function Notification() {
     queryKey: ['NOTIFICATIONRESPONSE'],
   });
 
-  console.log(' getmessages notif is returning: ', notifData?.data);
+  const messages = notifData?.data;
   const [overdueBooks, setOverdueBooks] = useState<bookRequest[]>([]);
-  //console.log(' messages data is: ', messageData.data);
 
   useEffect(() => {
     if (!isLoading && data) {
@@ -33,13 +32,29 @@ function Notification() {
   return (
     <div className="flex w-full h-full text-xl flex-col gap-y-2 bg-gray-800 p-10 rounded-[15px]">
       <div className="font-bold text-white mb-8">Notification</div>
-      {overdueBooks.map((book) => (
-        <div key={book.bookId} className="flex text-gray-800 flex-col px-8 py-5 bg-red-500">
+      {overdueBooks.length > 0 ? (
+        overdueBooks?.map((book) => (
+          <div key={book.bookId} className="flex text-gray-800 flex-col px-8 py-5 bg-red-500">
+            <div className="font-bold mb-1">Admin</div>
+            <div className="flex flex-row">
+              &quot;
+              <LoadBookName id={book.bookId} />
+              &quot; is overdue (due date was: {new Date(book.dueDate).toLocaleString(
+                'en-UK',
+              )}){' '}
+            </div>
+          </div>
+        ))
+      ) : (
+        <div className="text-white">No overdue books here...</div>
+      )}
+      {messages?.map((message) => (
+        <div key={message?.bookId} className="flex text-gray-800 flex-col px-8 py-5 bg-red-500">
           <div className="font-bold mb-1">Admin</div>
           <div className="flex flex-row">
-            &quot;
-            <LoadBookName id={book.bookId} />
-            &quot; is overdue (due date was: {new Date(book.dueDate).toLocaleString('en-UK')}){' '}
+            Your requested to borrow &quot;
+            <LoadBookName id={message?.bookId} />
+            &quot; thus: {message?.message}
           </div>
         </div>
       ))}
