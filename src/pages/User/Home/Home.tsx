@@ -3,6 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import { getAllDeptBooks } from '@/services/users/queries';
 import { getUserDept } from '@/api/cookies';
 import { department } from '@/services/users/endpoints';
+import BookCover from '@/components/BookCover';
+
 function Home() {
   const { data, isLoading } = useQuery({
     queryFn: () => getAllDeptBooks(getUserDept() as department),
@@ -10,42 +12,32 @@ function Home() {
     refetchOnMount: true,
   });
   console.log(' book data is: ', data);
+
   return (
     <div className="flex w-full h-full flex-col gap-y-5">
       <div className="flex w-full flex-col">
         <div className=" mb-2 font-bold text-2xl ">Books from your department</div>
-        <div className="flex flex-col  gap-8 lg:gap-11 w-full  overflow-x-scroll ">
+        <div className="flex flex-row gap-8 lg:gap-11 w-full overflow-x-auto">
           {data?.data?.map((item, key) => (
             <Link key={key} to={`/dashboard/${item?.bookId}`}>
-              <div
-                key={key}
-                className="w-full bg-gray-400 rounded-lg items-center justify-between flex p-2 pr-5 text-2xl"
-              >
-                <div className=" font-normal">{item?.name}</div>{' '}
-                <div className=" font-light">{item?.author}</div>
-              </div>
+              <BookCover author={item?.author} title={item?.name} key={item?.name + key} />
             </Link>
           ))}
           {isLoading && <div>Loading</div>}
         </div>
       </div>
-      {/**
-      <div className="flex w-full flex-col overflow-x-scroll">
-        <div className=" mb-2 font-bold text-2xl ">Recently viewed</div>
-        <div className="w-full bg-gray-400 rounded-lg items-center justify-between flex p-2 pr-5 text-2xl">
-          <div className=" font-normal">Book name</div> <div className=" font-light">Author</div>
+      {/* Recommended */}
+      <div className="flex w-full flex-col">
+        <div className=" mb-2 font-bold text-2xl ">Recommended books</div>
+        <div className="flex flex-row gap-8 rel lg:gap-11 w-full overflow-x-auto">
+          {data?.data?.map((item, key) => (
+            <Link key={key} to={`/dashboard/${item?.bookId}`}>
+              <BookCover author={item?.author} title={item?.name} key={item?.name + key} />
+            </Link>
+          ))}
+          {isLoading && <div>Loading</div>}
         </div>
       </div>
-
-     
-     <div className="flex w-full flex-col">
-        <div className=" mb-2 font-medium text-xl ">Overdue books</div>
-        <div className="flex gap-11  flex-col">
-          <div className="flex ">
-            “Title of book” overdue!! was meant to be returned on the 8/9/2024
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 }
