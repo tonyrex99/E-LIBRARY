@@ -63,7 +63,7 @@ function Login() {
         />
       </div>
 
-      <div className="text-gray-800 text-xl flex w-full lg:w-1/2 h-full px-7 md:px-16 pt-20 relative">
+      <div className="xtext-gray-800 text-xl flex w-full lg:w-1/2 h-full px-7 md:px-16 pt-20 relative">
         <Link to={'/'}>
           <div className="  font-normal absolute xtop-0 xleft-0 mb-7 ">Back</div>
         </Link>
@@ -77,14 +77,14 @@ function Login() {
             <Input
               onChange={({ target }) => setUserInfo({ ...userInfo, matricNumber: target.value })}
               name="matric-no"
-              className="border-gray-800 border py-5 px-6 flex justify-center text-2xl text-gray-800 rounded-2xl w-full h-16"
+              className="border-gray-800 border py-5 px-6 flex justify-center text-2xl xtext-gray-800 rounded-2xl w-full h-16"
               placeholder="Enter your Matric no"
             />
             <Input
               onChange={({ target }) => setUserInfo({ ...userInfo, password: target.value })}
               name="password"
               type="password"
-              className="border-gray-800 border py-5 px-6 flex justify-center text-2xl text-gray-800 rounded-2xl w-full h-16"
+              className="border-gray-800 border py-5 px-6 flex justify-center text-2xl xtext-gray-800 rounded-2xl w-full h-16"
               placeholder="Enter your password"
             />
 

@@ -15,7 +15,9 @@ import Drawer from '@mui/material/Drawer';
 import { ExpandLess, ExpandMore, ExitToApp } from '@mui/icons-material';
 import { removeAuthToken } from '@/api/cookies';
 import './style.css';
-
+import useTheme from '@/store/theme';
+import { useQuery } from '@tanstack/react-query';
+import { getusersData } from '@/services/users/queries';
 export const drawerWidth = 300;
 
 interface Props {
@@ -26,6 +28,12 @@ interface Props {
 function Sidebar(props: Props) {
   const { title } = props;
   const [isSidebarOpen, sidebarActions] = useSidebar();
+  const [theme, themeActions] = useTheme();
+  const { data } = useQuery({
+    queryFn: getusersData,
+    queryKey: ['ME'],
+  });
+
   const { window } = props;
   const container = window !== undefined ? () => window().document.body : undefined;
   const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>({});
@@ -52,11 +60,11 @@ function Sidebar(props: Props) {
                 sx={{
                   minHeight: 48,
                   justifyContent: isSidebarOpen ? 'initial' : 'center',
-                  borderColor: 'black',
+                  borderColor: theme == 'dark' ? 'white' : 'black',
                   borderwidth: '1px',
-                  backgroundColor: 'white',
+                  backgroundColor: theme != 'dark' ? 'white' : 'black',
                   borderRadius: '15px',
-                  color: 'black',
+                  color: theme == 'dark' ? 'white' : 'black',
                 }}
                 component={NavLink}
                 to={fullPath!}
@@ -107,11 +115,11 @@ function Sidebar(props: Props) {
                       minHeight: 48,
                       justifyContent: isSidebarOpen ? 'initial' : 'center',
 
-                      borderColor: 'black',
+                      borderColor: theme == 'dark' ? 'white' : 'black',
                       borderwidth: '1px',
-                      backgroundColor: 'white',
+                      backgroundColor: theme != 'dark' ? 'white' : 'black',
                       borderRadius: '15px',
-                      color: 'black',
+                      color: theme == 'dark' ? 'white' : 'black',
                       width: '100%',
                       mx: -1,
                     }}
@@ -149,9 +157,17 @@ function Sidebar(props: Props) {
   const drawer = (
     <div
       style={{ position: 'relative', height: '100%' }}
-      className="flex flex-col justify-start items-center bg-[#d3d3d3] border-r-2 border-gray-800"
+      className={`flex flex-col justify-start items-center bg-[#d3d3d3]   ${
+        theme == 'dark' && 'bg-gray-900'
+      }  border-r-2 border-gray-800`}
     >
-      <div className="w-full text-center p-3 text-xl mt-2 font-semibold">COE LIBRARY</div>
+      <div
+        className={`w-full text-center p-3 text-xl mt-2 font-semibold ${
+          theme == 'dark' && 'text-white'
+        }`}
+      >
+        {data?.data?.department || 'COE'} LIBRARY
+      </div>
       <List sx={{ width: 250, pt: (theme) => `${theme.mixins.toolbar.minHeight}px` }}>
         {filteredRoutes.map((route) => renderSidebar({ [route.path as string]: route }))}
       </List>
@@ -167,9 +183,9 @@ function Sidebar(props: Props) {
           mx: 4,
           borderColor: 'black',
           borderwidth: '1px',
-          backgroundColor: 'white',
+          backgroundColor: theme != 'dark' ? 'white' : '#7a0012',
           borderRadius: '15px',
-          color: 'black',
+          color: theme == 'dark' ? 'white' : 'black',
         }}
         className="hover:bg-[#5c0512]/50 hover:text-white"
         onClick={() => removeAuthToken()}

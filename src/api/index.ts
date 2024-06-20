@@ -3,11 +3,10 @@
 /* eslint-disable no-throw-literal */
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import _axios from 'axios';
-
 import axiosRetry from 'axios-retry';
-import { getAuthToken } from './cookies';
+import { getAuthToken, removeAuthToken } from './cookies';
 
-const API_BASE_URL = 'https://library-project-8kmz.onrender.com/api/v1'; // '/api'; // 'https://library-project-4iu4.onrender.com/api/v1'; //'/api';
+const API_BASE_URL = 'https://library-project-8kmz.onrender.com/api/v1';
 
 const axiosInstance = _axios.create({
   baseURL: `${API_BASE_URL}`,
@@ -33,7 +32,6 @@ axiosInstance.interceptors.request.use(
 );
 
 // Retry configuration
-// would be lovely to have some retry setup here
 const retryDelay = (retryNumber = 0) => {
   const seconds = 2 ** retryNumber * 1000;
   const randomMs = 1000 * Math.random();
@@ -43,7 +41,6 @@ const retryDelay = (retryNumber = 0) => {
 const retryConfig = {
   retries: 2,
   retryDelay,
-  // retry on Network Error & 5xx responses
   retryCondition: axiosRetry.isRetryableError,
 };
 
@@ -53,20 +50,28 @@ const handleApiSuccess = (res: AxiosResponse) => {
 
 const handleApiError = (err: AxiosError) => {
   if (err.response) {
-    // Handle error response from the server
+    const { status, data } = err.response;
 
-    const { data } = err.response;
+    if (status === 401) {
+      // Remove auth token cookie
+      removeAuthToken();
+
+      // Redirect to login page
+      if (typeof window !== 'undefined') {
+        window.location.href = '/login';
+      }
+    }
+
+    // Handle error response from the server
     const error =
       (data as any).error || (data as any).message || (data as any).detail || 'An error occurred';
 
     throw error;
   } else if (err.request) {
     // Handle network error (no response received)
-    // console.error('A network error occurred. Please check your internet connection.');
     throw 'Network Error';
   } else {
     // Handle unexpected error
-    // console.error('An unexpected error occurred:', err.message);
     throw 'Unexpected Error';
   }
 };

@@ -2,7 +2,7 @@ import isMobile from '@/utils/is-mobile';
 
 import type { Notifications } from './types';
 
-const title = 'E-Library';
+const title = 'Library';
 
 const email = 'samuel.daniel@stu.cu.edu.ng';
 
