@@ -14,7 +14,6 @@ const axiosInstance = _axios.create({
   headers: {
     'Content-Type': 'application/json',
     Accept: '*/*',
-    'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
   },
 });
 

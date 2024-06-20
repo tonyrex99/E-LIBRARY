@@ -2,7 +2,7 @@
 import Meta from '@/components/Meta';
 import { StyledInputBase, Search, SearchIconWrapper } from '@/sections/HotKeys/HotKeys';
 import SearchIcon from '@mui/icons-material/Search';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getAllUsersData } from '@/services/users/queries';
 import { suspendUserById } from '@/services/users/mutations';
@@ -17,6 +17,7 @@ function ManageUsers() {
   });
 
   const [searchText, setSearchText] = useState('');
+  const [filteredUsers, setFilteredUsers] = useState<any[]>([]);
 
   const suspend = useMutation({
     mutationFn: suspendUserById,
@@ -29,8 +30,18 @@ function ManageUsers() {
     },
   });
 
+  useEffect(() => {
+    if (data?.data) {
+      setFilteredUsers(
+        data.data.filter((user: any) =>
+          user.matricNumber.toLowerCase().includes(searchText.toLowerCase()),
+        ),
+      );
+    }
+  }, [searchText, data]);
+
   const handleSuspend = (userId: number, matricNumber: string, status: string) => {
-    const value = status == 'suspend' ? true : false;
+    const value = status === 'suspend';
     const confirmed = window.confirm(`Are you sure you want to ${status} user ${matricNumber}?`);
     if (confirmed) {
       suspend.mutate({ userId, value });
@@ -54,9 +65,9 @@ function ManageUsers() {
 
       <div className="flex w-full h-full flex-col">
         {isLoading && <div>Loading...</div>}
-        {!isLoading && data?.data?.length === 0 && <div>No results found</div>}
+        {!isLoading && filteredUsers.length === 0 && <div>No results found</div>}
         {!isLoading &&
-          data?.data?.map((item, key) => (
+          filteredUsers.map((item, key) => (
             <div
               key={key}
               className={`flex flex-row justify-between items-center rounded-xl p-2 ${
@@ -71,7 +82,7 @@ function ManageUsers() {
                   handleSuspend(
                     Number(item.userId),
                     item.matricNumber,
-                    item?.locked == true ? 'restore' : 'suspend',
+                    item?.locked === true ? 'restore' : 'suspend',
                   )
                 }
                 className={` text-lg md:text-xl hover:underline font-semibold ${
