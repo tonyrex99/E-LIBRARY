@@ -45,12 +45,12 @@ function Sidebar(props: Props) {
 
         if (!notChild) {
           items.push(
-            <ListItem key={fullPath}>
+            <ListItem key={fullPath} sx={{ px: 1 }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
                   justifyContent: isSidebarOpen ? 'initial' : 'center',
-                  px: 2.5,
+                  // px: 2.5,
                 }}
                 component={Link}
                 to={'/' + fullPath}
@@ -144,11 +144,12 @@ function Sidebar(props: Props) {
         sx={{
           position: 'absolute',
           bottom: 5,
+          left: 5,
           width: '100%',
           justifyContent: 'center',
           //  borderRadius: '15px',
           //borderWidth: 1,
-          mx: 2,
+          mx: 4,
           borderColor: 'black',
         }}
         onClick={() => removeAuthToken()}
