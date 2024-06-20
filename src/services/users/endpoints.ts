@@ -27,3 +27,7 @@ export const GETALLBOOKSFORDEPT = (dept: department): string =>
   `${APIBACK}library/books/all/${dept}`;
 export const PUTSUSPENDUSER = (userId: number): string =>
   `${APIBACK}users/account/suspend/${userId}`;
+
+export const RETURNBOOK = (bookRequestId: number) => {
+  return `${APIBACK}library/books/requests/${bookRequestId}/return`;
+};

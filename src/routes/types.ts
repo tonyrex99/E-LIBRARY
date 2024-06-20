@@ -20,6 +20,7 @@ enum Pages {
   Notification,
   Search,
   ReserveBooks,
+  ReturnBorrowedBooks,
   /**admin pages */
   AdminHome,
   AdminLogin,

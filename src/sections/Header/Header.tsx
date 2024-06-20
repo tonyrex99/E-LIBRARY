@@ -1,4 +1,4 @@
-import GitHubIcon from '@mui/icons-material/GitHub';
+//import GitHubIcon from '@mui/icons-material/GitHub';
 import ThemeIcon from '@mui/icons-material/InvertColors';
 import MenuIcon from '@mui/icons-material/Menu';
 import AppBar from '@mui/material/AppBar';
@@ -10,14 +10,16 @@ import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 
 import { FlexBox } from '@/components/styled';
-import { repository, title } from '@/config';
+import { title } from '@/config';
+//import { repository } from '@/config';
+
 import useHotKeysDialog from '@/store/hotkeys';
 import useNotifications from '@/store/notifications';
 import useSidebar from '@/store/sidebar';
 import useTheme from '@/store/theme';
 
 import { HotKeysButton } from './styled';
-import { getRandomJoke } from './utils';
+//import { getRandomJoke } from './utils';
 
 function Header() {
   const [, sidebarActions] = useSidebar();
@@ -36,7 +38,7 @@ function Header() {
         // your own `variant`s, see @/sections/Notifications/Notifications.tsx
         variant: 'customNotification',
       },
-      message: getRandomJoke(),
+      message: 'Welcome to Library Management System', // getRandomJoke(),
     });
   }
 
@@ -74,13 +76,16 @@ function Header() {
               </Tooltip>
             </FlexBox>
             <Divider orientation="vertical" flexItem />
-            <Tooltip title="It's open source" arrow>
+            {/**
+            <Tooltip className="hidden" title="It's open source" arrow>
               <IconButton color="info" size="large" component="a" href={repository} target="_blank">
                 <GitHubIcon />
               </IconButton>
             </Tooltip>
-            <Divider orientation="vertical" flexItem />
-            <Tooltip title="Switch theme" arrow>
+        
+              <Divider orientation="vertical" flexItem />
+           */}{' '}
+            <Tooltip className="hidden" title="Switch theme" arrow>
               <IconButton
                 color="info"
                 edge="end"

@@ -11,6 +11,7 @@ import {
   DELETEBOOK,
   DELETEBOOKREQUESTS,
   PUTSUSPENDUSER,
+  RETURNBOOK,
 } from './endpoints';
 import { department } from './endpoints';
 import { ApiSuccessResponse, UsersResponseData } from '../types/responses';
@@ -98,4 +99,8 @@ export function suspendUserById({ userId, value = true }: { userId: number; valu
   return Api.post(PUTSUSPENDUSER(userId), {
     suspend: value,
   });
+}
+
+export function returnBook(bookRequestId: number) {
+  return Api.post(RETURNBOOK(bookRequestId), '');
 }

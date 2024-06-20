@@ -72,6 +72,13 @@ const routes: Routes = {
             icon: AddTaskIcon,
             visible: true,
           },
+          [Pages.ReturnBorrowedBooks]: {
+            component: asyncComponentLoader(() => import('@/pages/User/ReturnBook')),
+            path: 'return-books',
+            title: 'Return Borrowed Books',
+            icon: AddTaskIcon,
+            visible: true,
+          },
           [Pages.ReserveBooks]: {
             component: asyncComponentLoader(() => import('@/pages/User/BorrowedBooks')),
             path: 'borrowed-books/:reserve',

@@ -19,10 +19,14 @@ export default function IndexTransaction() {
               View reserved books
             </div>
           </Link>
-
           <Link to={'/dashboard'} className="w-full">
             <div className="flex py-3 px-10 w-full rounded-[15px] bg-gray-800 text-white ">
               Borrow books
+            </div>
+          </Link>
+          <Link to={'return-books'} className="w-full">
+            <div className="flex py-3 px-10 w-full rounded-[15px] bg-gray-800 text-white ">
+              Return borrowed books
             </div>
           </Link>
         </div>
