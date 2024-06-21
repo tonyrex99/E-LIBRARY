@@ -85,7 +85,7 @@ function Book() {
     Boolean(isBookReserved),
   );
 
-  const bookRequestId = isBookBorrowed?.bookRequestId || isBookReserved?.bookRequestId;
+  const bookRequestId = renew || isBookBorrowed?.bookRequestId || isBookReserved?.bookRequestId;
   const bookData = data?.data;
 
   const inLibrary = isBookBorrowed;
@@ -175,10 +175,7 @@ function Book() {
                     </button>
                   </>
                 ) : (
-                  <div>
-                    Sorry. This book has either been reserved or your previous request for this book
-                    is still pending..{' '}
-                  </div>
+                  <div>Sorry. Your previous request for this book is still pending.. </div>
                 )}
               </div>
             </div>
