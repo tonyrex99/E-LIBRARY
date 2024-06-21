@@ -58,8 +58,34 @@ function Book() {
       alert(`Returning book failed!`);
     },
   });
-  const isBookBorrowed = allBorrowed?.data?.find((item: any) => item.bookId === Number(book));
-  const bookRequestId = isBookBorrowed ? isBookBorrowed.bookRequestId : false;
+  const isBookBorrowed = allBorrowed?.data?.find(
+    (item: any) =>
+      item.bookId === Number(book) &&
+      item.bookRequestType === 'BORROW' &&
+      item.status === 'APPROVED',
+  );
+
+  const isBookReserved = allBorrowed?.data?.find(
+    (item: any) =>
+      item.bookId === Number(book) &&
+      item.bookRequestType === 'RESERVE' &&
+      item.status === 'APPROVED',
+  );
+
+  const isBookPending = allBorrowed?.data?.find(
+    (item: any) => item.bookId === Number(book) && item.status === 'PENDING',
+  );
+
+  console.log(
+    'book is borrowed: ',
+    Boolean(isBookBorrowed),
+    ' book status is pending: ',
+    Boolean(isBookPending),
+    ' book status is reserved: ',
+    Boolean(isBookReserved),
+  );
+
+  const bookRequestId = isBookBorrowed?.bookRequestId || isBookReserved?.bookRequestId;
   const bookData = data?.data;
 
   const inLibrary = isBookBorrowed;
@@ -117,7 +143,7 @@ function Book() {
               </div>
 
               <div className="w-full flex gap-6  flex-col">
-                {!inLibrary ? (
+                {!inLibrary && Boolean(!isBookPending) && Boolean(!isBookReserved) ? (
                   <>
                     {' '}
                     <button
@@ -133,7 +159,7 @@ function Book() {
                       Reserve this book for later
                     </button>
                   </>
-                ) : (
+                ) : !isBookPending ? (
                   <>
                     <button
                       onMouseDown={requestExtension}
@@ -145,9 +171,14 @@ function Book() {
                       onMouseDown={() => returnBookMutation.mutate(Number(bookRequestId))}
                       className="bg-gray-800 max-w-[469px] text-white p-4 rounded-2xl w-full "
                     >
-                      Return Book
+                      {isBookReserved ? 'Un-reserve' : 'Return'} Book
                     </button>
                   </>
+                ) : (
+                  <div>
+                    Sorry. This book has either been reserved or your previous request for this book
+                    is still pending..{' '}
+                  </div>
                 )}
               </div>
             </div>

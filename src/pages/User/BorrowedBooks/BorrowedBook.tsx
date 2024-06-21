@@ -59,7 +59,7 @@ function BorrowedBook() {
       <div className="flex w-full flex-col gap-y-5">
         <Link to={'/dashboard/book-transaction'}>
           <button className="mb-2 font-bold text-xl flex flex-row items-center">
-            <ChevronLeft /> &nbsp;<div>Borrowed books</div>
+            <ChevronLeft /> &nbsp;<div>{reserve ? 'Reserved' : 'Borrowed'} books</div>
           </button>
         </Link>
         <div className="flex gap-11 flex-col">

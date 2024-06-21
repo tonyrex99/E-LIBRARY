@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Meta from '@/components/Meta';
 import { ChevronLeft } from '@mui/icons-material';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getMyBookRequests, getBook } from '@/services/users/queries';
+import { getMyBookRequests, getBook, bookRequest } from '@/services/users/queries';
 import { useParams } from 'react-router-dom';
 import { getAllUsersData } from '@/services/users/queries';
 import { returnBook } from '@/services/users/mutations';
@@ -95,57 +95,61 @@ function BorrowedBook() {
         </Link>
         <div className="flex gap-11 flex-col">
           <div className="w-full">
-            {bookRequests.map(
-              (
-                item: {
-                  status: string;
-                  bookId: string | number;
-                  dueDate: string | number | Date;
-                  bookRequestId: any;
-                },
-                key: Key | null | undefined,
-              ) => (
-                <div
-                  key={key}
-                  className="flex justify-between flex-row items-center py-3 px-10 w-full bg-ash-500 text-gray-800"
-                >
-                  <div className="flex flex-wrap justify-start">
-                    {item.status === 'PENDING'
-                      ? `You requested to ${reserve ? 'reserve' : 'borrow'}`
-                      : `You ${reserve ? 'reserved' : 'borrowed'}`}{' '}
-                    <div className="text-gray-800 font-bold flex flex-wrap flex-row">
-                      &nbsp;
-                      <LoadBookName id={item.bookId} />
-                      &nbsp;
+            {bookRequests
+              .filter(
+                (item: bookRequest) => item.status === 'APPROVED' || item.status === 'PENDING',
+              )
+              .map(
+                (
+                  item: {
+                    status: string;
+                    bookId: string | number;
+                    dueDate: string | number | Date;
+                    bookRequestId: any;
+                  },
+                  key: Key | null | undefined,
+                ) => (
+                  <div
+                    key={key}
+                    className="flex justify-between flex-row items-center py-3 px-10 w-full bg-ash-500 text-gray-800"
+                  >
+                    <div className="flex flex-wrap justify-start">
+                      {item.status === 'PENDING'
+                        ? `You requested to ${reserve ? 'reserve' : 'borrow'}`
+                        : `You ${reserve ? 'reserved' : 'borrowed'}`}{' '}
+                      <div className="text-gray-800 font-bold flex flex-wrap flex-row">
+                        &nbsp;
+                        <LoadBookName id={item.bookId} />
+                        &nbsp;
+                      </div>
+                      {item.status === 'PENDING'
+                        ? 'and return it by'
+                        : new Date(item.dueDate) < new Date()
+                          ? 'OVERDUE!!'
+                          : ' to be returned by'}{' '}
+                      <div
+                        className={`text-gray-800 font-bold ${
+                          new Date(item.dueDate) < new Date() ? 'text-red-500' : ''
+                        }`}
+                      >
+                        &nbsp; {new Date(item.dueDate).toLocaleString('en-UK')}&nbsp;
+                      </div>
                     </div>
-                    {item.status === 'PENDING'
-                      ? 'and return it by'
-                      : new Date(item.dueDate) < new Date()
-                        ? 'OVERDUE!!'
-                        : ' to be returned by'}{' '}
-                    <div
-                      className={`text-gray-800 font-bold ${
-                        new Date(item.dueDate) < new Date() ? 'text-red-500' : ''
-                      }`}
-                    >
-                      &nbsp; {new Date(item.dueDate).toLocaleString('en-UK')}&nbsp;
-                    </div>
+                    {item.status === 'PENDING' ? (
+                      <div className="p-3 bg-gray-800 text-blue-300 rounded-2xl font-normal">
+                        Pending approval
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => returnBookMutation.mutate(Number(item?.bookRequestId))}
+                        className="p-3 bg-gray-800 text-white rounded-2xl font-normal"
+                      >
+                        Return Book
+                      </button>
+                    )}
                   </div>
-                  {item.status === 'PENDING' ? (
-                    <div className="p-3 bg-gray-800 text-blue-300 rounded-2xl font-normal">
-                      Pending approval
-                    </div>
-                  ) : (
-                    <button
-                      onClick={() => returnBookMutation.mutate(Number(item?.bookRequestId))}
-                      className="p-3 bg-gray-800 text-white rounded-2xl font-normal"
-                    >
-                      Return Book
-                    </button>
-                  )}
-                </div>
-              ),
-            )}
+                ),
+              )}
           </div>
         </div>
       </div>
