@@ -147,11 +147,11 @@ function HotKeys() {
                   </a>
                 ) : (
                   <div className="flex gap-1">
-                    <a href={`/dashboard/${item?.bookId}`}>
+                    {/**       <a href={`/dashboard/${item?.bookId}`}>
                       <Button color="info" variant="contained">
                         Read
                       </Button>
-                    </a>
+                    </a> */}
                     <Button
                       onClick={() => {
                         deleteBook.mutate(Number(item?.bookId));

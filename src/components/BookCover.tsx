@@ -64,7 +64,7 @@ const BookCover: React.FC<BookCoverProps> = ({
 
   return (
     <div
-      className={`relative flex flex-col justify-between p-4 ${coverColor} ${pattern} text-white shadow-lg border-2 border-gray-500 transition-transform transform hover:scale-105 hover:z-10 active:z-10 hover:absolute  active:scale-110`}
+      className={`relative flex flex-col justify-between p-4 ${coverColor} ${pattern} text-white shadow-lg border-2 border-gray-500 transition-transform transform hover:scale-105 hover:z-10 active:z-10 active:scale-110`}
       style={{ width: `${width}px`, height: `${height}px`, perspective: '1000px' }}
     >
       <div className="text-lg font-bold">{title}</div>
