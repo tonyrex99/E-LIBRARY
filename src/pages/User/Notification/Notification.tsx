@@ -49,7 +49,7 @@ function Notification() {
         <div className="text-white">No overdue books here...</div>
       )}
       {messages?.map((message) => (
-        <div key={message?.bookId} className="flex text-white flex-col px-8 py-5 bg-red-500">
+        <div key={message?.bookId} className="flex text-gray-800 flex-col px-8 py-5 bg-white">
           <div className="font-bold mb-1">Admin</div>
           <div className="flex flex-row">
             Your requested to borrow &quot;
