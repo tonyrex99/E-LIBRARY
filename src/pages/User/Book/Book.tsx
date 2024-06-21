@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import TextField from '@mui/material/TextField';
 
 import Meta from '@/components/Meta';
@@ -9,9 +10,15 @@ import { Close } from '@mui/icons-material';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { getBook } from '@/services/users/queries';
-import { requestBorrowReserveBook, requestDueDateChange } from '@/services/users/mutations';
+import {
+  requestBorrowReserveBook,
+  requestDueDateChange,
+  returnBook,
+} from '@/services/users/mutations';
 import { reserveBookData } from '@/services/users/mutations';
+import { getMyBookRequests } from '@/services/users/queries';
 import { ChangeEvent, useEffect } from 'react';
+import BookCover from '@/components/BookCover';
 type ModalTypes = 'BORROW' | 'RESERVE' | 'success' | 'RENEW' | 'close' | 'failure';
 
 type BookActionsType = {
@@ -34,11 +41,28 @@ function Book() {
   const { data, isLoading, isError, error } = useQuery({
     queryFn: () => getBook(Number(book!)),
     queryKey: ['GETBOOKBYID'],
-    retry: false,
+    // retry: false,
   });
+
+  const { data: allBorrowed } = useQuery({
+    queryFn: getMyBookRequests,
+    queryKey: ['ALLMYBOOKREQUEST'],
+  });
+
+  const returnBookMutation = useMutation({
+    mutationFn: returnBook,
+    onSuccess: () => {
+      alert(`Book successfully returned!`);
+    },
+    onError: () => {
+      alert(`Returning book failed!`);
+    },
+  });
+  const isBookBorrowed = allBorrowed?.data?.find((item: any) => item.bookId === Number(book));
+  const bookRequestId = isBookBorrowed ? isBookBorrowed.bookRequestId : false;
   const bookData = data?.data;
 
-  const inLibrary = false;
+  const inLibrary = isBookBorrowed;
   const [isModal, setisModal] = useState<ModalTypes>('close');
   function requestExtension() {
     setisModal('RENEW');
@@ -77,37 +101,55 @@ function Book() {
 
       <div className="flex w-full h-auto flex-row gap-9">
         <div className="items-end flex w-full ">
-          <div className="gap-y-10 flex flex-col w-full">
-            <div className=" w-fit text-center">
-              <div className="text-gray-800 font-bold ">{pageData.title}</div>
-              <div>{pageData.author}</div>
+          <div className="gap-x-9 flex flex-row w-full">
+            <div className="hidden lg:flex">
+              <BookCover
+                width={250}
+                height={350}
+                author={pageData?.author as string}
+                title={pageData?.title as string}
+              />
             </div>
+            <div className="gap-y-10 justify-between flex flex-col w-full">
+              <div className=" w-fit text-center">
+                <div className="text-gray-800 font-bold ">{pageData.title}</div>
+                <div>{pageData.author}</div>
+              </div>
 
-            <div className="w-full flex gap-6  flex-col">
-              {!inLibrary ? (
-                <>
-                  {' '}
-                  <button
-                    onMouseDown={borrowBook}
-                    className="bg-gray-800 max-w-[469px] text-white p-4 rounded-2xl w-full "
-                  >
-                    Borrow book now
-                  </button>
-                  <button
-                    onMouseDown={reserveBook}
-                    className="bg-gray-800 max-w-[469px] text-white p-4 rounded-2xl w-full "
-                  >
-                    Reserve this book for later
-                  </button>
-                </>
-              ) : (
-                <button
-                  onMouseDown={requestExtension}
-                  className="bg-gray-800 max-w-[469px] text-white p-4 rounded-2xl w-full "
-                >
-                  Request Extension
-                </button>
-              )}
+              <div className="w-full flex gap-6  flex-col">
+                {!inLibrary ? (
+                  <>
+                    {' '}
+                    <button
+                      onMouseDown={borrowBook}
+                      className="bg-gray-800 max-w-[469px] text-white p-4 rounded-2xl w-full "
+                    >
+                      Borrow book now
+                    </button>
+                    <button
+                      onMouseDown={reserveBook}
+                      className="bg-gray-800 max-w-[469px] text-white p-4 rounded-2xl w-full "
+                    >
+                      Reserve this book for later
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onMouseDown={requestExtension}
+                      className="bg-gray-800 max-w-[469px] text-white p-4 rounded-2xl w-full "
+                    >
+                      Request Extension
+                    </button>
+                    <button
+                      onMouseDown={() => returnBookMutation.mutate(Number(bookRequestId))}
+                      className="bg-gray-800 max-w-[469px] text-white p-4 rounded-2xl w-full "
+                    >
+                      Return Book
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
